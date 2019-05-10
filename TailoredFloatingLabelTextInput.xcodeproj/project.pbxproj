@@ -22,8 +22,6 @@
 		5DDCABB01E682DE000A203B3 /* TailoredFloatingLabelTextInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DDCABA21E682DE000A203B3 /* TailoredFloatingLabelTextInput.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5DDCABBA1E6839CB00A203B3 /* TailoredTextAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDCABB91E6839CB00A203B3 /* TailoredTextAlignment.swift */; };
 		5DDCABBC1E6839FA00A203B3 /* TailoredTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDCABBB1E6839FA00A203B3 /* TailoredTextField.swift */; };
-		5DDCABBE1E683B2F00A203B3 /* TailoredTextInputLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDCABBD1E683B2F00A203B3 /* TailoredTextInputLayout.swift */; };
-		5DE5937A1E687A3400CA842B /* TailoredTextInputLayout.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DE593791E687A3400CA842B /* TailoredTextInputLayout.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,8 +74,6 @@
 		5DDCABAF1E682DE000A203B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5DDCABB91E6839CB00A203B3 /* TailoredTextAlignment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TailoredTextAlignment.swift; sourceTree = "<group>"; };
 		5DDCABBB1E6839FA00A203B3 /* TailoredTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TailoredTextField.swift; sourceTree = "<group>"; };
-		5DDCABBD1E683B2F00A203B3 /* TailoredTextInputLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TailoredTextInputLayout.swift; sourceTree = "<group>"; };
-		5DE593791E687A3400CA842B /* TailoredTextInputLayout.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TailoredTextInputLayout.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,8 +145,6 @@
 				5DDCABA31E682DE000A203B3 /* Info.plist */,
 				5DDCABB91E6839CB00A203B3 /* TailoredTextAlignment.swift */,
 				5DDCABBB1E6839FA00A203B3 /* TailoredTextField.swift */,
-				5DDCABBD1E683B2F00A203B3 /* TailoredTextInputLayout.swift */,
-				5DE593791E687A3400CA842B /* TailoredTextInputLayout.xib */,
 				5D15EFBB1EDDA64300BE4C74 /* BottomLine.swift */,
 			);
 			path = TailoredFloatingLabelTextInput;
@@ -264,6 +258,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -294,7 +289,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DE5937A1E687A3400CA842B /* TailoredTextInputLayout.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,7 +320,6 @@
 				5D15EFBC1EDDA64300BE4C74 /* BottomLine.swift in Sources */,
 				5DDCABBA1E6839CB00A203B3 /* TailoredTextAlignment.swift in Sources */,
 				5DDCABBC1E6839FA00A203B3 /* TailoredTextField.swift in Sources */,
-				5DDCABBE1E683B2F00A203B3 /* TailoredTextInputLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,7 +513,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -541,7 +534,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.autsoft.TailoredFloatingLabelTextInput;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

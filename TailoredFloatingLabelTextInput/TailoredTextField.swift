@@ -24,7 +24,7 @@
 
 import UIKit
 
-/** 
+/**
  A delegate intended to be used by the TailoredTextInputLayout
  to correctly handle changes in the contained TailoredTextField.
  */
@@ -48,7 +48,7 @@ private var bottomLineStorageKey: UInt8 = 0
 /**
  A highly customizable text input field, inherited from `UITextField`.
  */
-@IBDesignable open class TailoredTextField: UITextField {
+open class TailoredTextField: UITextField {
     
     /// The delegate of the `TailoredTextField`
     var tailoredTextFieldDelegate: TailoredTextFieldDelegate?
@@ -69,7 +69,7 @@ private var bottomLineStorageKey: UInt8 = 0
         }
     }
     
-    /** 
+    /**
      Whether the TextField is embedded inside a `TailoredTextInputLayout`.
      Important because it have to behave differently in this case
      as the `TailoredTextInputLayout` handles some of its aspects.
@@ -113,17 +113,16 @@ private var bottomLineStorageKey: UInt8 = 0
     }
     
     /// The inset before and after the text.
-    @IBInspectable
-    open var textInsetX: CGFloat = 0
+    open var textInsetXLeft: CGFloat = 0
+    
+    open var textInsetXRight: CGFloat = 0
     
     /// The inset above and below the text.
-    @IBInspectable
     open var textInsetY: CGFloat = 0
     
     // MARK: - Background customization
     
     /// The corner radius of the `TextField` background.
-    @IBInspectable
     open var backgroundCornerRadius: CGFloat {
         get {
             return self.layer.cornerRadius
@@ -137,7 +136,6 @@ private var bottomLineStorageKey: UInt8 = 0
     // MARK: - Border customization
     
     /// Whether the border is displayed or not for the TextField.
-    @IBInspectable
     open var borderEnabled: Bool = false
     
     /**
@@ -146,8 +144,9 @@ private var bottomLineStorageKey: UInt8 = 0
      - Note:
      It is only taken into account if the `borderEnabled` is set to `true`.
      */
-    @IBInspectable
-    open var normalBorderColor: UIColor?
+    open var activeBorderColor: UIColor?
+    
+    open var notActiveBorderColor: UIColor?
     
     // MARK: - Drop shadow customization
     
@@ -160,7 +159,6 @@ private var bottomLineStorageKey: UInt8 = 0
      If you are not satisfied with this behaviour, please use the `TailoredTextInputLayout` instead,
      which only display the drop shadow below the TextField itself.
      */
-    @IBInspectable
     open var dropShadowColor: UIColor? {
         get {
             if let shadowColor = layer.shadowColor {
@@ -175,7 +173,7 @@ private var bottomLineStorageKey: UInt8 = 0
                 layer.shadowRadius = 2.0
                 clipsToBounds = false
             } else {
-                clipsToBounds = true
+                clipsToBounds = false
             }
             layoutSubviews()
         }
@@ -187,7 +185,6 @@ private var bottomLineStorageKey: UInt8 = 0
      - Note:
      It is only taken into account if the `dropShadowColor` is not `nil`.
      */
-    @IBInspectable
     open var dropShadowOpacity: Float {
         get {
             return layer.shadowOpacity
@@ -201,7 +198,6 @@ private var bottomLineStorageKey: UInt8 = 0
     // MARK: - Bottom line customization
     
     /// Whether the bottom line is displayed for the TextField.
-    @IBInspectable
     open var bottomLineEnabled: Bool = false
     
     /**
@@ -210,7 +206,6 @@ private var bottomLineStorageKey: UInt8 = 0
      - Note:
      It is only taken into account if the `bottomLineEnabled` is set to `true`.
      */
-    @IBInspectable
     open var bottomLineNormalColor: UIColor?
     
     /**
@@ -219,7 +214,6 @@ private var bottomLineStorageKey: UInt8 = 0
      - Note:
      It is only taken into account if the `bottomLineEnabled` is set to `true`.
      */
-    @IBInspectable
     open var bottomLineActiveColor: UIColor?
     
     /**
@@ -228,29 +222,23 @@ private var bottomLineStorageKey: UInt8 = 0
      - Note:
      It is only taken into account if the `bottomLineEnabled` is set to `true`.
      */
-    @IBInspectable
     open var bottomLineErrorColor: UIColor?
     
     // MARK: - Floating label customization
     
     /// Whether the placeholder text is displayed as a floating label when the TextField is active.
-    @IBInspectable
     open var floatingLabelEnabled: Bool = true
     
     /// The value which the floating label needs to be tranlated upwards when displayed.
-    @IBInspectable
     open var floatingLabelTranslateY: CGFloat = 36.0
     
     /// The text color of the floating label.
-    @IBInspectable
-    open var floatingLabelTextColor: UIColor?
+    open var placeholderFocusedTextColor: UIColor?
     
     /// The text color of the floating label when the TextField is in the error state.
-    @IBInspectable
     open var floatingLabelErrorTextColor: UIColor?
     
     /// The inset before the floating label.
-    @IBInspectable
     open var floatingLabelInsetX: CGFloat = 0
     
     // MARK: - Placeholder text customization
@@ -261,11 +249,9 @@ private var bottomLineStorageKey: UInt8 = 0
      * As a floating label
      * Or completely disappear (as the default TextField behaves)
      */
-    @IBInspectable
     open var isPlaceholderOnlyChangedOnTextEntered: Bool = false
     
     /// The inset before and after the placeholder label.
-    @IBInspectable
     open var placeholderInsetX: CGFloat = 0 {
         didSet {
             placeholderLabelLeftConstraint?.constant = placeholderInsetX
@@ -274,7 +260,6 @@ private var bottomLineStorageKey: UInt8 = 0
     }
     
     /// The inset above and below the placeholder label.
-    @IBInspectable
     open var placeholderInsetY: CGFloat = 0 {
         didSet {
             placeholderLabelTopConstraint?.constant = placeholderInsetY
@@ -284,12 +269,10 @@ private var bottomLineStorageKey: UInt8 = 0
     
     /// The label that displays the placeholder and is also transformed
     /// to be a floating label if that functionality is enabled.
-    @IBInspectable
-    open let placeholderLabel = UILabel()
+    public let placeholderLabel = UILabel()
     
     /// The text to be displayed as placeholder and also
     /// as a floating label if that functionality is enabled.
-    @IBInspectable
     open var placeholderText: String? {
         get {
             return placeholderLabel.text
@@ -306,7 +289,6 @@ private var bottomLineStorageKey: UInt8 = 0
     }
     
     /// The text color of the placeholder.
-    @IBInspectable
     open var placeholderTextColor: UIColor? {
         didSet {
             if !isPlaceholderInEditingMode {
@@ -315,10 +297,25 @@ private var bottomLineStorageKey: UInt8 = 0
         }
     }
     
+    open var placeholderTextFont: UIFont? {
+        didSet {
+            if !isPlaceholderInEditingMode {
+                placeholderLabel.font = placeholderTextFont
+            }
+        }
+    }
+    
+    open var placeholderTextEditingFont: UIFont? {
+        didSet {
+            if isPlaceholderInEditingMode {
+                placeholderLabel.font = placeholderTextEditingFont
+            }
+        }
+    }
+    
     // MARK: - Detail text customization
     
-    /// The inset before and after the detail label.
-    @IBInspectable
+    /// The inset before and after the detail label
     open var detailInsetX: CGFloat = 0 {
         didSet {
             detailLabelLeftConstraint?.constant = detailInsetX
@@ -326,12 +323,17 @@ private var bottomLineStorageKey: UInt8 = 0
         }
     }
     
+    /// The inset on top of the detail label
+    open var detailInsetY: CGFloat = 0 {
+        didSet {
+            detailLabelHeightConstraint?.constant = detailInsetY
+        }
+    }
+    
     /// The label used to display the detail text.
-    @IBInspectable
-    open let detailLabel = UILabel()
+    public let detailLabel = UILabel()
     
     /// The text displayed in the detail label.
-    @IBInspectable
     open var detailText: String? {
         didSet {
             detailLabel.text = detailText
@@ -345,7 +347,7 @@ private var bottomLineStorageKey: UInt8 = 0
     }
     
     /// The text color of the detail text.
-    @IBInspectable
+    
     open var detailTextColor: UIColor?
     
     /**
@@ -356,30 +358,9 @@ private var bottomLineStorageKey: UInt8 = 0
      */
     open var detailTextAlignment = TailoredTextAlignment.left
     
-    /**
-     The property used to set the alignment of the detail text from the Interface Builder.
-     
-     - Important:
-     This property is reserved for Interface Builder. Use `detailTextAlignment` property to 
-     set the detail text alignment from code instead.
-     */
-    @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'detailTextAlignment' instead.")
-    @IBInspectable
-    open var detailTextAlignmentName: String? {
-        willSet {
-            if let newDetailTextAlignment = TailoredTextAlignment(rawValue: newValue?.lowercased() ?? "") {
-                detailTextAlignment = newDetailTextAlignment
-            } else {
-                detailTextAlignment = .left
-            }
-            layoutSubviews()
-        }
-    }
-    
     // MARK: - Error display customization
     
     /// The inset to be applied before and after the error text.
-    @IBInspectable
     open var errorInsetX: CGFloat = 0
     
     /**
@@ -388,7 +369,6 @@ private var bottomLineStorageKey: UInt8 = 0
      - Note:
      If this is set anything different than `nil`, the error will be shown.
      */
-    @IBInspectable
     open var errorText: String? {
         didSet {
             if errorTextNotNilOrEmpty {
@@ -401,11 +381,9 @@ private var bottomLineStorageKey: UInt8 = 0
     }
     
     /// Whether the error state should be cleared as soon as text is entered.
-    @IBInspectable
     open var clearErrorOnInput: Bool = false
     
     /// Whether a border should be displayed in error state.
-    @IBInspectable
     open var displayBorderOnError: Bool = false
     
     /**
@@ -414,19 +392,15 @@ private var bottomLineStorageKey: UInt8 = 0
      - Note:
      It is only taken into account if the `displayBorderOnError` is set to `true`.
      */
-    @IBInspectable
     open var errorBorderColor: UIColor?
     
     /// The text color of the error text.
-    @IBInspectable
     open var errorTextColor: UIColor?
     
     /// The background color of the error text.
-    @IBInspectable
     open var errorBackgroundColor: UIColor?
     
     /// The bottom corner radius of the error text label's background.
-    @IBInspectable
     open var errorBackgroundBottomCornerRadius: CGFloat = 0.0
     
     /**
@@ -436,25 +410,6 @@ private var bottomLineStorageKey: UInt8 = 0
      Another property called `errorTextAlignmentName` is used the set this value in the Interface Builder.
      */
     open var errorTextAlignment = TailoredTextAlignment.left
-    
-    /**
-     The property used to set the alignment of the error text from the Interface Builder.
-     
-     - Important:
-     This property is reserved for Interface Builder. Use `errorTextAlignment` property to
-     set the detail text alignment from code instead.
-     */
-    @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'errorTextAlignment' instead.")
-    @IBInspectable var errorTextAlignmentName: String? {
-        willSet {
-            if let newErrorTextAlignment = TailoredTextAlignment(rawValue: newValue?.lowercased() ?? "") {
-                errorTextAlignment = newErrorTextAlignment
-            } else {
-                errorTextAlignment = .left
-            }
-            layoutSubviews()
-        }
-    }
     
     // MARK: - Bottom line associated object and helper methods
     
@@ -521,12 +476,12 @@ private var bottomLineStorageKey: UInt8 = 0
     override open func textRect(forBounds bounds: CGRect) -> CGRect {
         let clearButtonVisible = clearButtonMode == .always || clearButtonMode == .whileEditing
         let clearButtonWidth = clearButtonRect(forBounds: bounds).width
-        let extractFromWidth = clearButtonVisible ? textInsetX + clearButtonWidth : 2 * textInsetX
+        let extractFromWidth = clearButtonVisible ? textInsetXLeft + clearButtonWidth : textInsetXLeft + textInsetXRight
         
-        let editingRectX = bounds.origin.x + textInsetX
+        let editingRectX = bounds.origin.x + textInsetXLeft
         let editingRectY = bounds.origin.y + textInsetY
         let editingRectWidth = bounds.width - extractFromWidth
-        let editingRectHeight = bounds.height - 2 * textInsetY
+        let editingRectHeight = bounds.height
         return CGRect(x: editingRectX, y: editingRectY, width: editingRectWidth, height: editingRectHeight)
     }
     
@@ -540,12 +495,12 @@ private var bottomLineStorageKey: UInt8 = 0
     override open func editingRect(forBounds bounds: CGRect) -> CGRect {
         let clearButtonVisible = clearButtonMode == .always || clearButtonMode == .whileEditing
         let clearButtonWidth = clearButtonRect(forBounds: bounds).width
-        let extractFromWidth = clearButtonVisible ? textInsetX + clearButtonWidth : 2 * textInsetX
+        let extractFromWidth = clearButtonVisible ? textInsetXLeft + clearButtonWidth : textInsetXLeft + textInsetXRight
         
-        let editingRectX = bounds.origin.x + textInsetX
+        let editingRectX = bounds.origin.x + textInsetXLeft
         let editingRectY = bounds.origin.y + textInsetY
         let editingRectWidth = bounds.width - extractFromWidth
-        let editingRectHeight = bounds.height - 2 * textInsetY
+        let editingRectHeight = bounds.height
         return CGRect(x: editingRectX, y: editingRectY, width: editingRectWidth, height: editingRectHeight)
     }
     
@@ -558,7 +513,7 @@ private var bottomLineStorageKey: UInt8 = 0
      - SeeAlso:
      [Apple Documentation](https://developer.apple.com/documentation/uikit/uiview/1622488-init)
      */
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         setupSubviews()
     }
@@ -634,10 +589,10 @@ private var bottomLineStorageKey: UInt8 = 0
         placeholderLabelRightConstraint = NSLayoutConstraint(item: placeholderLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: -(placeholderInsetX + (rightView?.layer.frame.size.width ?? 0)))
         NSLayoutConstraint.activate([placeholderLabelTopConstraint!, placeholderLabelBottomConstraint!, placeholderLabelLeftConstraint!, placeholderLabelRightConstraint!])
         
-        detailLabelTopConstraint = NSLayoutConstraint(item: detailLabel, attribute: .top, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0.0)
+        detailLabelTopConstraint = NSLayoutConstraint(item: detailLabel, attribute: .top, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: 1.0, constant: 5.0)
         detailLabelLeftConstraint = NSLayoutConstraint(item: detailLabel, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1.0, constant: detailInsetX)
         detailLabelRightConstraint = NSLayoutConstraint(item: detailLabel, attribute: .trailing, relatedBy: .equal, toItem: self, attribute: .trailing, multiplier: 1.0, constant: -detailInsetX)
-        detailLabelHeightConstraint = NSLayoutConstraint(item: detailLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 22.0)
+        detailLabelHeightConstraint = NSLayoutConstraint(item: detailLabel, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: detailInsetY)
         NSLayoutConstraint.activate([detailLabelTopConstraint!, detailLabelLeftConstraint!, detailLabelRightConstraint!, detailLabelHeightConstraint!])
     }
     
@@ -651,8 +606,6 @@ private var bottomLineStorageKey: UInt8 = 0
     override open func awakeFromNib() {
         super.awakeFromNib()
         borderStyle = .none
-        placeholderLabel.font = UIFont.systemFont(ofSize: self.font?.pointSize ?? 18.0, weight: UIFontWeightLight)
-        detailLabel.font = UIFont.systemFont(ofSize: 12.0)
         
         addTargetHandlers()
     }
@@ -677,7 +630,7 @@ private var bottomLineStorageKey: UInt8 = 0
                 detailLabelLeftConstraint?.constant = errorInsetX
                 detailLabelRightConstraint?.constant = -errorInsetX
                 
-                detailLabel.clipsToBounds = true
+                detailLabel.clipsToBounds = false
                 let detailLabelPath = UIBezierPath(roundedRect: detailLabel.bounds, byRoundingCorners: [.bottomLeft, .bottomRight], cornerRadii: CGSize(width: errorBackgroundBottomCornerRadius, height: errorBackgroundBottomCornerRadius))
                 let detailLabelMask = CAShapeLayer()
                 detailLabelMask.path = detailLabelPath.cgPath
@@ -698,7 +651,7 @@ private var bottomLineStorageKey: UInt8 = 0
                     self.layer.borderColor = errorBorderColor!.cgColor
                     self.layer.borderWidth = 1
                 } else {
-                    self.layer.borderColor = normalBorderColor?.cgColor
+                    self.layer.borderColor = isFirstResponder ? activeBorderColor?.cgColor : notActiveBorderColor?.cgColor
                     self.layer.borderWidth = 1
                 }
             } else {
@@ -728,7 +681,7 @@ private var bottomLineStorageKey: UInt8 = 0
                 detailLabel.textColor = detailTextColor
                 setTextAlignment(detailTextAlignment, for: detailLabel)
                 if floatingLabelEnabled {
-                    placeholderLabel.textColor = isPlaceholderInEditingMode ? floatingLabelTextColor : placeholderTextColor
+                    placeholderLabel.textColor = isFirstResponder ? placeholderFocusedTextColor : placeholderTextColor
                 }
             }
         }
@@ -773,7 +726,7 @@ private var bottomLineStorageKey: UInt8 = 0
      label or hide) when the cursor is in the TextField.
      
      - Note:
-     This functionality can be turned on or off by setting the 
+     This functionality can be turned on or off by setting the
      `isPlaceholderOnlyChangedOnTextEntered` property's value.
      */
     @objc fileprivate func handleEditingDidBegin() {
@@ -865,21 +818,22 @@ private var bottomLineStorageKey: UInt8 = 0
                 if floatingLabelErrorTextColor != nil && errorTextNotNilOrEmpty {
                     placeholderLabel.textColor = floatingLabelErrorTextColor ?? placeholderTextColor
                 } else {
-                    placeholderLabel.textColor = floatingLabelTextColor ?? placeholderTextColor
+                    placeholderLabel.textColor = placeholderFocusedTextColor ?? placeholderTextColor
                 }
                 placeholderLabel.translatesAutoresizingMaskIntoConstraints = true
                 setAnchorPoint(CGPoint(x: 0.0, y: 0.5), for: placeholderLabel)
-                UIView.animate(withDuration: 0.15, delay: 0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+                UIView.animate(withDuration: 0.15, delay: 0, options: UIView.AnimationOptions.curveEaseInOut, animations: {
                     [weak self]
                     in
                     guard let strongSelf = self else {
                         return
                     }
-                    strongSelf.placeholderLabel.transform = CGAffineTransform(scaleX: 0.75, y: 0.75).translatedBy(x: 0, y: strongSelf.placeholderInsetY - strongSelf.floatingLabelTranslateY)
+                    strongSelf.placeholderLabel.transform = CGAffineTransform(scaleX: 1.0, y: 1.0).translatedBy(x: 0, y: strongSelf.placeholderInsetY - strongSelf.floatingLabelTranslateY)
+                    strongSelf.placeholderLabel.font = strongSelf.placeholderTextEditingFont
                     strongSelf.layoutIfNeeded()
                     }, completion: nil)
             } else {
-                UIView.animate(withDuration: 0.15, delay: 0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+                UIView.animate(withDuration: 0.15, delay: 0, options: UIView.AnimationOptions.curveEaseInOut, animations: {
                     [weak self]
                     in
                     guard let strongSelf = self else {
@@ -893,6 +847,7 @@ private var bottomLineStorageKey: UInt8 = 0
                     guard let strongSelf = self else {
                         return
                     }
+                    strongSelf.placeholderLabel.font = strongSelf.placeholderTextFont
                     strongSelf.placeholderLabel.textColor = strongSelf.placeholderTextColor
                 }
             }
@@ -911,14 +866,14 @@ private var bottomLineStorageKey: UInt8 = 0
      correct behaviour.
      
      - Note:
-     For setting the anchor point and correctly display the animation translateing the placeholder label 
-     to the floating label position along the leading axis, the auto layout constraints need to be disabled 
-     by setting the `translatesAutoresizingMaskIntoConstraints` to `true` for the placeholder label. 
+     For setting the anchor point and correctly display the animation translateing the placeholder label
+     to the floating label position along the leading axis, the auto layout constraints need to be disabled
+     by setting the `translatesAutoresizingMaskIntoConstraints` to `true` for the placeholder label.
      This breaks the constraints of it.
      
      - Parameters:
-         - anchorPoint: The anchor point to be set.
-         - view: The view which the anchor point needs to be set.
+     - anchorPoint: The anchor point to be set.
+     - view: The view which the anchor point needs to be set.
      */
     fileprivate func setAnchorPoint(_ anchorPoint: CGPoint, for view: UIView) {
         var newPoint = CGPoint(x: view.bounds.size.width * anchorPoint.x, y: view.bounds.size.height * anchorPoint.y)
@@ -943,8 +898,8 @@ private var bottomLineStorageKey: UInt8 = 0
      of the `TailoredTextAlignment` `enum` cases.
      
      - Parameters:
-         - textAlignment: The text alingment to be set.
-         - label: The label which the text alignment needs to be set.
+     - textAlignment: The text alingment to be set.
+     - label: The label which the text alignment needs to be set.
      */
     fileprivate func setTextAlignment(_ textAlignment: TailoredTextAlignment, for label: UILabel) {
         switch textAlignment {
@@ -956,5 +911,4 @@ private var bottomLineStorageKey: UInt8 = 0
             label.textAlignment = .right
         }
     }
-    
 }
