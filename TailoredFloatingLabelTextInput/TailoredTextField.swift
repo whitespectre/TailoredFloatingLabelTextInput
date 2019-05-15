@@ -840,16 +840,10 @@ open class TailoredTextField: UITextField {
                         return
                     }
                     strongSelf.placeholderLabel.transform = .identity
-                    strongSelf.layoutIfNeeded()
-                }) {
-                    [weak self]
-                    finished in
-                    guard let strongSelf = self else {
-                        return
-                    }
                     strongSelf.placeholderLabel.font = strongSelf.placeholderTextFont
                     strongSelf.placeholderLabel.textColor = strongSelf.placeholderTextColor
-                }
+                    strongSelf.layoutIfNeeded()
+                })
             }
         } else {
             placeholderLabel.isHidden = isPlaceholderInEditingMode
