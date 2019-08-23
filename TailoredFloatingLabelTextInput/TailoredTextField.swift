@@ -481,7 +481,7 @@ open class TailoredTextField: UITextField {
         let editingRectX = bounds.origin.x + textInsetXLeft
         let editingRectY = bounds.origin.y + textInsetY
         let editingRectWidth = bounds.width - extractFromWidth
-        let editingRectHeight = bounds.height
+        let editingRectHeight = bounds.height - textInsetY
         return CGRect(x: editingRectX, y: editingRectY, width: editingRectWidth, height: editingRectHeight)
     }
     
@@ -500,7 +500,7 @@ open class TailoredTextField: UITextField {
         let editingRectX = bounds.origin.x + textInsetXLeft
         let editingRectY = bounds.origin.y + textInsetY
         let editingRectWidth = bounds.width - extractFromWidth
-        let editingRectHeight = bounds.height
+        let editingRectHeight = bounds.height - textInsetY
         return CGRect(x: editingRectX, y: editingRectY, width: editingRectWidth, height: editingRectHeight)
     }
     
@@ -686,6 +686,7 @@ open class TailoredTextField: UITextField {
             }
         }
         tailoredTextFieldDelegate?.textFieldDidLayoutSubviews()
+        bringSubviewToFront(placeholderLabel)
     }
     
     // MARK: - Handle changes
@@ -791,7 +792,7 @@ open class TailoredTextField: UITextField {
      */
     public func onTextChanged(text: String?) {
         if isPlaceholderInEditingMode != textNotNilOrEmpty {
-            isPlaceholderInEditingMode = textNotNilOrEmpty
+            isPlaceholderInEditingMode = isFirstResponder || textNotNilOrEmpty
         }
         
         if textNotNilOrEmpty && clearErrorOnInput {
